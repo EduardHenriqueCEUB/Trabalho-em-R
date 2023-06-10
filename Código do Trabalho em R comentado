@@ -1,0 +1,45 @@
+# Aluno: Eduardo Henrique Moraes Santos
+#RA: 22309110
+
+# Pacotes instalados para a utlização das bibliotecas.
+install.packages('ggplot2')
+install.packages('dplyr')
+install.packages('plotly')
+install.packages('tidyverse')
+install.packages('readxl')
+install.packages('scales')
+
+
+# Chamando as bibliotecas para a montagem do gráfico.
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(readxl)
+library(tidyverse)
+library(scales)
+
+# Chamdando a tabela do excel que foi feito o upload no ambiente R.
+tabela_brent <- read_excel('brent-tabela.xlsx')
+
+# Esse código converte a coluna 'calendario' para o formato de data.
+tabela_brent$calendario <- as.Date(tabela_brent$calendario, format = "%d/%m/%Y")
+
+# Para melhor mostragem no gráfico, esse código cria uma 
+# coluna 'ano' que mostra apenas o ano da data.
+tabela_brent$ano <- lubridate::year(tabela_brent$calendario)
+
+# Essa parte do código calcula a média de cada ano, 
+# desde de 1987 até 2023. Foi feito essa filtragem para 
+# melhor mostrar os dados no gráfico.
+medias_anuais <- tabela_brent %>%
+  group_by(ano) %>%
+  summarize(media = mean(preco))
+
+# Essa última parte do código cria o gráfico de linha 
+# a partir das informações fornecidas no código acima.
+ggplot(medias_anuais, aes(x = ano, y = media)) +
+  geom_line() +
+  labs(x = "Data(Ano)", y = "Preço BRENT") +
+  ggtitle("Média de Preços por Ano") +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(1987, 2023, 3))
