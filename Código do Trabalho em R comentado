@@ -1,5 +1,5 @@
 # Aluno: Eduardo Henrique Moraes Santos
-#RA: 22309110
+# RA: 22309110
 
 # Pacotes instalados para a utlização das bibliotecas.
 install.packages('ggplot2')
@@ -18,7 +18,7 @@ library(readxl)
 library(tidyverse)
 library(scales)
 
-# Chamdando a tabela do excel que foi feito o upload no ambiente R.
+# Chamando a tabela do excel que foi feito o upload no ambiente R.
 tabela_brent <- read_excel('brent-tabela.xlsx')
 
 # Esse código converte a coluna 'calendario' para o formato de data.
@@ -35,7 +35,7 @@ medias_anuais <- tabela_brent %>%
   group_by(ano) %>%
   summarize(media = mean(preco))
 
-# Essa última parte do código cria o gráfico de linha 
+# Essa parte do código cria o gráfico de linha 
 # a partir das informações fornecidas no código acima.
 ggplot(medias_anuais, aes(x = ano, y = media)) +
   geom_line() +
@@ -43,3 +43,12 @@ ggplot(medias_anuais, aes(x = ano, y = media)) +
   ggtitle("Média de Preços por Ano") +
   theme_minimal() +
   scale_x_continuous(breaks = seq(1987, 2023, 3))
+
+# Essa última parte do código cria o histograma 
+# a partir das informações fornecidas no código acima.
+ggplot(tabela_brent, aes(x = preco)) +
+  geom_histogram(fill = "steelblue", color = "black", bins = 800) +
+  labs(x = "Preço BRENT", y = "Frequência") +
+  ggtitle("Distribuição de Preços") +
+  theme_minimal()
+
